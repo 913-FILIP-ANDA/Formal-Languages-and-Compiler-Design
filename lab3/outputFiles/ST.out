@@ -1,0 +1,9 @@
+
+Identifiers Symbol Table
+23 -> [('a', 0)]
+24 -> [('b', 1)]
+25 -> [('c', 2)]
+30 -> [('max', 3)]
+
+Constants Symbol Table
+24 -> [('"max"', 0)]
