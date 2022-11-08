@@ -13,6 +13,6 @@ max:=a;
 if max < b then {max:=1b}
 if max < c then {max:=c}
 
-display("max");
+display("The maximum number is ", "max");
 }
 end

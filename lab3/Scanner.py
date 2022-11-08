@@ -1,7 +1,6 @@
 import re
 
 from FileReader import get_tokens
-from SymbolTable import SymbolTable
 from PIF import PIF
 from hashTable import HashTable
 from regex import INT_CONSTANT_REGEX, STRING_CONSTANT_REGEX, IDENTIFIER_REGEX
@@ -33,7 +32,8 @@ class Scanner:
         return result is not None
 
     def scanLineByLine(self, file_name):
-        symbol_table = HashTable(37)
+        identifiers_symbol_table = HashTable()
+        constants_symbol_table = HashTable()
         program_internal_form = PIF()
 
         # open file and read all lines
@@ -61,8 +61,11 @@ class Scanner:
                         omit_next = True
                     elif self.isReservedToken(token):
                         program_internal_form.add(token, 0)
-                    elif self.isNumberConst(token) or self.isStringConst(token) or self.isIdentifierConst(token):
-                        position = symbol_table.add(token)
+                    elif self.isIdentifierConst(token):
+                        position = identifiers_symbol_table.add(token)
+                        program_internal_form.add(token, position)
+                    elif self.isNumberConst(token) or self.isStringConst(token):
+                        position = constants_symbol_table.add(token)
                         program_internal_form.add(token, position)
                     else:
                         raise ValueError('Lexical error on token ' + token + ' at line: ' + str(line_count))
@@ -70,14 +73,18 @@ class Scanner:
                     omit_next = False
 
         with open("D:/Semestrul 5/compilator/laborator3/outputFiles/ST.out", 'w') as file:
-            file.write(str(symbol_table))
+            file.write("\nIdentifiers Symbol Table\n")
+            file.write(str(identifiers_symbol_table))
+            file.write("\nConstants Symbol Table\n")
+            file.write(str(constants_symbol_table))
 
         with open("D:/Semestrul 5/compilator/laborator3/outputFiles/PIF.out", 'w') as file:
             file.write(str(program_internal_form))
-        return symbol_table, program_internal_form, "Lexically correct"
+        return identifiers_symbol_table, program_internal_form, "Lexically correct"
 
     def scan(self, file_name):
-        symbol_table = SymbolTable()
+        identifiers_symbol_table = HashTable()
+        constants_symbol_table = HashTable()
         program_internal_form = PIF()
 
         # open file and read all lines
@@ -97,9 +104,12 @@ class Scanner:
         for token in line_data:
             if self.isReservedToken(token):
                 program_internal_form.add(token, 0)
-            elif self.isNumberConst(token) or self.isIdentifierConst(token):
-                position = symbol_table.add(token)
+            elif self.isNumberConst(token):
+                position = constants_symbol_table.add(token)
+                program_internal_form.add(token, position)
+            elif self.isIdentifierConst(token):
+                position = identifiers_symbol_table.add(token)
                 program_internal_form.add(token, position)
             else:
                 raise ValueError('Lexical error on token ' + token)
-        return symbol_table, program_internal_form
+        return identifiers_symbol_table, program_internal_form
