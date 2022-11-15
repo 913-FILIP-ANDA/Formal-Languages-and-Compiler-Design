@@ -1,0 +1,13 @@
+#states
+p, q, r
+#alphabet
+a, b
+#initial
+p
+#final
+r
+#transitions
+p, b, q
+q, a, q
+q, b, r
+r, a, r

@@ -1,0 +1,12 @@
+#states
+A, B, C
+#alphabet
+a, b, c
+#initial
+A
+#final
+C
+#transitions
+A, a, B
+B, b, B
+B, c, C
