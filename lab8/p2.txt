@@ -1,0 +1,18 @@
+start
+{
+define int: x;
+define int: i;
+
+read: x;
+i:=3;
+
+if x == 2 then {display(x, "is a prime number");}
+
+while(i * i < x) do
+{ if n%i == 0 then {display(x, "is not a prime number"); stop;}
+  i++;
+}
+
+display(x, "is a prime number");
+}
+end
